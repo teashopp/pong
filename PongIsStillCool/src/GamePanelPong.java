@@ -13,14 +13,16 @@ import javax.swing.Timer;
 public class GamePanelPong extends JPanel implements ActionListener, KeyListener {
 
 	// variables
-	final int MENU = 0;
-	final int GAME = 1;
-	final int END = 2;
-	int currentState = MENU;
+	static final int MENU = 0;
+	static final int GAME = 1;
+	static final int END0 = 2;
+	static final int END1 = 3;
+	static int currentState = MENU;
 	Timer frameDraw;
+	Timer pongballspawn;
 	Paddle p1 = new Paddle(100, 200, 50, 150);
 	Paddle p2 = new Paddle(900, 200, 50, 150);
-	ObjectManagerPong omp;
+	ObjectManagerPong omp = new ObjectManagerPong(p1, p2);
 
 	// font variables
 	Font titleFont0;
@@ -43,6 +45,16 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 	public void updateGameState() {
 		p1.update();
 		p2.update();
+
+		omp.update();
+
+		if (omp.score == 2) {
+			currentState = 3;
+		}
+
+		else if (omp.score == -2) {
+			currentState = 2;
+		}
 	}
 
 	// update at end
@@ -70,15 +82,25 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 		g.drawString("Pong!", 450, 100);
 		p1.draw(g);
 		p2.draw(g);
+		omp.draw(g);
 	}
 
-	// draw end
-	public void drawEndState(Graphics g) {
+	// draw end 1
+	public void drawEndState0(Graphics g) {
 		g.setColor(Color.blue);
 		g.fillRect(0, 0, Pong.WIDTH, Pong.HEIGHT);
 		g.setFont(titleFont0);
 		g.setColor(Color.white);
-		g.drawString("Game over!", 400, 250);
+		g.drawString("Game over, left player wins!", 400, 250);
+	}
+
+	// draw end 2
+	public void drawEndState1(Graphics g) {
+		g.setColor(Color.blue);
+		g.fillRect(0, 0, Pong.WIDTH, Pong.HEIGHT);
+		g.setFont(titleFont0);
+		g.setColor(Color.white);
+		g.drawString("Game over, right player wins!", 400, 250);
 	}
 
 	@Override
@@ -89,8 +111,11 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 		if (currentState == GAME) {
 			drawGameState(g);
 		}
-		if (currentState == END) {
-			drawEndState(g);
+		if (currentState == END0) {
+			drawEndState0(g);
+		}
+		if (currentState == END1) {
+			drawEndState1(g);
 		}
 	}
 
@@ -103,7 +128,10 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 		if (currentState == GAME) {
 			updateGameState();
 		}
-		if (currentState == END) {
+		if (currentState == END0) {
+			updateEndState();
+		}
+		if (currentState == END1) {
 			updateEndState();
 		}
 		repaint();
@@ -120,14 +148,19 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 		}
 		// update current state
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (currentState == END) {
+			if (currentState == END0) {
 				currentState = MENU;
+				pongballspawn.stop();
+			} else if (currentState == END1) {
+				currentState = MENU;
+				pongballspawn.stop();
 			} else {
 				currentState++;
 			}
 		}
 		// move paddles
 		if (currentState == GAME) {
+			pongballSpawn();
 			// move left paddle
 			if (e.getKeyCode() == KeyEvent.VK_W) {
 				p1.up = true;
@@ -166,5 +199,10 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public void pongballSpawn() {
+		pongballspawn = new Timer(1000, omp);
+		pongballspawn.start();
 	}
 }

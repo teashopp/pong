@@ -2,8 +2,8 @@ import javax.swing.JFrame;
 
 public class Pong {
 	
-	// pong but every 15 seconds another ball is added and each time the ball hits a wall the person who missed loses a point
-	// model management, gamepanel 部分，第八
+	// pong but every few seconds another ball is added and each time the ball hits a wall the person who missed loses a point
+	
 	
 	// initial info
 	JFrame gameframe;
