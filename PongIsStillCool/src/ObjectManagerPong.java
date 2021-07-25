@@ -75,27 +75,39 @@ public class ObjectManagerPong implements ActionListener {
 	public void checkCollision() {
 		for (int i = pongballs.size() - 1; i >= 0; i--) {
 			if (p1.collisionBox0.intersects(pongballs.get(i).collisionBox)) {
-
+				pongballs.get(i).upright();
 			}
 
 			else if (p1.collisionBox1.intersects(pongballs.get(i).collisionBox)) {
-
+				pongballs.get(i).moveright();
 			}
 
 			else if (p1.collisionBox2.intersects(pongballs.get(i).collisionBox)) {
-
+				pongballs.get(i).downright();
 			}
 
 			else if (p2.collisionBox0.intersects(pongballs.get(i).collisionBox)) {
-
+				pongballs.get(i).upleft();
 			}
 
 			else if (p2.collisionBox1.intersects(pongballs.get(i).collisionBox)) {
-
+				pongballs.get(i).moveleft();
 			}
 
 			else if (p2.collisionBox2.intersects(pongballs.get(i).collisionBox)) {
-
+				pongballs.get(i).downleft();
+			}
+			else if(pongballs.get(i).x <= 500 && pongballs.get(i).y == 0) {
+				pongballs.get(i).downleft();
+			}
+			else if(pongballs.get(i).x <= 500 && pongballs.get(i).y == 500) {
+				pongballs.get(i).upleft();
+			}
+			else if(pongballs.get(i).x > 500 && pongballs.get(i).y == 0) {
+				pongballs.get(i).downright();
+			}
+			else if(pongballs.get(i).x >500 && pongballs.get(i).y == 500) {
+				pongballs.get(i).upright();
 			}
 		}
 	}

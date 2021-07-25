@@ -48,6 +48,8 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 
 		omp.update();
 
+		pongballspawn.start();
+
 		if (omp.score == 2) {
 			currentState = 3;
 		}
@@ -91,7 +93,7 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 		g.fillRect(0, 0, Pong.WIDTH, Pong.HEIGHT);
 		g.setFont(titleFont0);
 		g.setColor(Color.white);
-		g.drawString("Game over, left player wins!", 400, 250);
+		g.drawString("Game over, left player wins!", 200, 250);
 	}
 
 	// draw end 2
@@ -100,7 +102,7 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 		g.fillRect(0, 0, Pong.WIDTH, Pong.HEIGHT);
 		g.setFont(titleFont0);
 		g.setColor(Color.white);
-		g.drawString("Game over, right player wins!", 400, 250);
+		g.drawString("Game over, right player wins!", 200, 250);
 	}
 
 	@Override
@@ -148,10 +150,7 @@ public class GamePanelPong extends JPanel implements ActionListener, KeyListener
 		}
 		// update current state
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			if (currentState == END0) {
-				currentState = MENU;
-				pongballspawn.stop();
-			} else if (currentState == END1) {
+			if (currentState == END0 || currentState == END0) {
 				currentState = MENU;
 				pongballspawn.stop();
 			} else {
